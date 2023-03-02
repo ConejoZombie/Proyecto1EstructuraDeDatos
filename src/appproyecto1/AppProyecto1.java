@@ -29,6 +29,9 @@ public class AppProyecto1 {
     //varible contadora
     int conta = 0;
 
+    //VARIABLES UTILIDAD
+    int tipoServicioReporte = 0;
+
     public static void main(String[] args) {
         new AppProyecto1().menu();
     }
@@ -74,6 +77,7 @@ public class AppProyecto1 {
                     ConsultarPagos("ELIMINAR");
                     break;
                 case 6:
+                    LimpiarPantalla();
                     SubMenu();
                     break;
                 case 7:
@@ -103,15 +107,18 @@ public class AppProyecto1 {
             opcion = scanner.nextInt();
             switch (opcion) {
                 case 1:
+                    ReporteTodosLosPagos();
                     break;
-
                 case 2:
+                    ReportePorTipoDeServicio();
                     break;
                 case 3:
-
+                    
+                    break;
                 case 4:
                     break;
                 case 5:
+                    LimpiarPantalla();
                     menu();
                     break;
 
@@ -199,11 +206,21 @@ public class AppProyecto1 {
             System.out.println("Ingrese el tipo de servicio: " + " \n [1-Electricidad 2-Telefono 3-Agua]");
             servicioIngresado = Integer.parseInt(scanner.next());
             if (servicioIngresado <= 3 && servicioIngresado > 0) {
-                if (opcion == "EDITAR") {
-                    tipoDeServicio.set(indice, servicioIngresado);
-                } else {
-                    tipoDeServicio.add(servicioIngresado);
+
+                switch (opcion) {
+                    case "EDITAR":
+                        tipoDeServicio.set(indice, servicioIngresado);
+                        break;
+                    case "INGRESAR":
+                        tipoDeServicio.add(servicioIngresado);
+                        break;
+                    case "VALIDAR":
+                        tipoServicioReporte = servicioIngresado;
+                        break;
+                    default:
+                        throw new AssertionError();
                 }
+
             } else {
                 System.err.println("Error vuelva a ingresar el valor!");
             }
@@ -279,7 +296,7 @@ public class AppProyecto1 {
                         Eliminar(i);
                         break;
                     case "CONSULTAR":
-
+                        ImprimirDatos(i);
                         break;
                     default:
                         throw new AssertionError();
@@ -399,7 +416,7 @@ public class AppProyecto1 {
         System.out.println("Esta seguro de eliminar el dato S/N?");
         String opcion = scanner.next();
         opcion = opcion.toUpperCase().trim();
-        if ( "S".equals(opcion) ) {
+        if ("S".equals(opcion)) {
             nombre.remove(indice);
             apellido1.remove(indice);
             apellido2.remove(indice);
@@ -421,6 +438,43 @@ public class AppProyecto1 {
             System.out.println("La información no fue eliminada!");
 
         }
+    }
 
+    public void ReporteTodosLosPagos() {
+        System.out.println("=============================================================================");
+        System.out.println("                         REPORTE TODOS LOS PAGOS                             ");
+        System.out.println("=============================================================================");
+        System.out.println("# pago Fecha/Hora  Pago Cedula   Nombre   Apellido1   Apellido2  Monto Recibo");
+        System.out.println("==============================================================================");
+        int totalRegistros = 0;
+        double totalMontos = 0;
+        for (int i = 0; i < numeroDeFactura.size(); i++) {
+            System.out.println(" " + (i + 1) + "     " + fecha.get(i) + " " + hora.get(i) + "   " + cedula.get(i) + "   " + nombre.get(i) + "   " + apellido1.get(i) + "   " + apellido2.get(i) + "   " + montoAPagar.get(i));
+            totalMontos += montoAPagar.get(i);
+            totalRegistros++;
+        }
+        System.out.println("==============================================================================");
+        System.out.println("Total de registros: " + totalRegistros + "                                     Monto total: " + totalMontos);
+    }
+
+    public void ReportePorTipoDeServicio() {
+        System.out.println("=============================================================================");
+        System.out.println("                         REPORTE TODOS LOS PAGOS                             ");
+        System.out.println("=============================================================================");
+        System.out.println("# pago Fecha/Hora  Pago Cedula   Nombre   Apellido1   Apellido2  Monto Recibo");
+        System.out.println("==============================================================================");
+        int totalRegistros = 0;
+        double totalMontos = 0;
+
+        ValidarServicioIngresado("VALIDAR", 0);
+        for (int i = 0; i < numeroDeFactura.size(); i++) {
+            if (tipoServicioReporte == tipoDeServicio.get(i)) {
+                System.out.println(" " + (i + 1) + "     " + fecha.get(i) + " " + hora.get(i) + "   " + cedula.get(i) + "   " + nombre.get(i) + "   " + apellido1.get(i) + "   " + apellido2.get(i) + "   " + montoAPagar.get(i));
+                totalMontos += montoAPagar.get(i);
+                totalRegistros++;
+            }
+        }
+        System.out.println("==============================================================================");
+        System.out.println("Total de registros: " + totalRegistros + "                                     Monto total: " + totalMontos);
     }
 }
