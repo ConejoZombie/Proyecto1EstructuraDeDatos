@@ -71,6 +71,7 @@ public class AppProyecto1 {
                     ConsultarPagos("EDITAR");
                     break;
                 case 5:
+                    ConsultarPagos("ELIMINAR");
                     break;
                 case 6:
                     SubMenu();
@@ -260,8 +261,10 @@ public class AppProyecto1 {
     }
 
     public void ConsultarPagos(String opcion) {
-        System.out.println("**** Consultar el pago ****");
-        System.out.println("Ingrese el número de pago a consultar");
+        System.out.println("==================================================");
+        System.out.println("               CONSULTA DE SERVICIO               ");
+        System.out.println("==================================================");
+        System.out.println("Ingrese el número de pago a consultar:");
 
         int numeroPagoAConsultar = scanner.nextInt();
 
@@ -289,13 +292,13 @@ public class AppProyecto1 {
             }
         }
         if (numeroDePago.size() == 0) {
-            System.err.println("Pago no se encuentra Registrado.");
+            System.err.println("Vectores vacíos.");
         }
     }
 
     public void ImprimirDatos(int indice) {
         System.out.println("==================================================");
-        System.out.println("                 FACTURA DE SERVICIO                ");
+        System.out.println("                FACTURA DE SERVICIO               ");
         System.out.println("==================================================");
         System.out.println("A-Fecha: " + fecha.get(indice));
         System.out.println("B-Hora: " + hora.get(indice));
@@ -378,7 +381,7 @@ public class AppProyecto1 {
             }
 
             System.out.println("Desea editar otro dato? ");
-            System.out.println(" N = no // Y = si ");
+            System.out.println(" N = no // S = si ");
             editarOtroDato = scanner.next();
 
         } while (editarOtroDato.toUpperCase() != "N");
@@ -386,14 +389,38 @@ public class AppProyecto1 {
     }
 
     public void Eliminar(int indice) {
-        System.out.println("**** Impresión de datos ****");
-        System.out.println("-Numero de pago: " + numeroDePago.get(indice));
-        System.out.println("Esta factura fue emitida en: " + fecha.get(indice));
-        System.out.println("A las: " + hora.get(indice));
-        System.out.println("");
-        System.out.println("*** Informacion del cliente ***");
-        System.out.println("Nombre: " + nombre.get(indice));
-        System.out.println("Primer appellido");
+        LimpiarPantalla();
+        System.out.println("==================================================");
+        System.out.println("                 ELIMINAR DATOS                   ");
+        System.out.println("==================================================");
+
+        ImprimirDatos(indice);
+
+        System.out.println("Esta seguro de eliminar el dato S/N?");
+        String opcion = scanner.next();
+        opcion = opcion.toUpperCase().trim();
+        if ( "S".equals(opcion) ) {
+            nombre.remove(indice);
+            apellido1.remove(indice);
+            apellido2.remove(indice);
+            cedula.remove(indice);
+            fecha.remove(indice);
+            hora.remove(indice);
+            numeroDePago.remove(indice);
+            numeroDeCaja.remove(indice);
+            tipoDeServicio.remove(indice);
+            numeroDeFactura.remove(indice);
+            montoComision.remove(indice);
+            montoAPagar.remove(indice);
+            montoDeducido.remove(indice);
+            montoPagaCon.remove(indice);
+            montoVuelto.remove(indice);
+            System.out.println("La información ya fue eliminada!");
+
+        } else {
+            System.out.println("La información no fue eliminada!");
+
+        }
 
     }
 }
