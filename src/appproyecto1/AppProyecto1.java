@@ -1,6 +1,7 @@
 package appproyecto1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -21,93 +22,101 @@ public class AppProyecto1 {
     ArrayList<String> numeroDeFactura = new ArrayList<>();
     ArrayList<Double> montoComision = new ArrayList<>();
     ArrayList<Double> montoAPagar = new ArrayList<>();
+    ArrayList<Double> montoPagaCon = new ArrayList<>();
     ArrayList<Double> montoDeducido = new ArrayList<>();
+    ArrayList<Double> montoVuelto = new ArrayList<>();
 
     //varible contadora
-    int conta = 1;
-    
+    int conta = 0;
+
     public static void main(String[] args) {
         new AppProyecto1().menu();
     }
 
     public void menu() {
 
-        int select = -1;
+        int opcion = 0;
 
-        while (select != 0) {
+        do {
+            System.out.println("==================================================");
+            System.out.println("                 MENU DE PRINCIPAL                ");
+            System.out.println("==================================================");
+            System.out.println(
+                    "\n1.-Inicializar Vectores"
+                    + "\n2.-Realizar Pagos\n"
+                    + "3.-Consultar Pagos\n"
+                    + "4.-Modificar Pagos\n"
+                    + "5.-Eliminar Pagos\n"
+                    + "6.-Submenú Reportes\n"
+                    + "7.- Salir\n");
+            System.out.println("==================================================");
 
-            try {
-                System.out.println("************************\nElige opción:\n1.-Inicializar Vectores"
-                        + "\n2.-Realizar Pagos\n"
-                        + "3.-Consultar Pagos\n"
-                        + "4.-Modificar Pagos\n"
-                        + "5.-Eliminar Pagos\n"
-                        + "6.-Submenú Reportes\n"
-                        + "7.- Salir\n************************");
-                select = Integer.parseInt(scanner.nextLine());
-                switch (select) {
-                    case 1:
-                        InicializarVectores();
-                        break;
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
 
-                    case 2:
-                        RealizarPagos();
-                        break;
-                    case 3:
-                        ConsultarPagos();
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        SubMenu();
-                        break;
-                    case 7:
-                        break;
+            switch (opcion) {
+                case 1:
+                    LimpiarPantalla();
+                    InicializarVectores();
+                    break;
 
-                }
-            } catch (Exception e) {
-                System.err.println("Opps! un error" + e);
+                case 2:
+                    LimpiarPantalla();
+                    RealizarPagos();
+                    break;
+                case 3:
+                    ConsultarPagos("CONSULTAR");
+                    break;
+                case 4:
+                    ConsultarPagos("EDITAR");
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    SubMenu();
+                    break;
+                case 7:
+                    System.exit(0);
+                    break;
             }
+        } while (opcion != 8);
 
-        }
     }
 
     public void SubMenu() {
 
-        int select = -1;
+        int opcion = 0;
 
-        while (select != 0) {
+        do {
+            System.out.println("==================================================");
+            System.out.println("                SUBMENU DE REPORTES               ");
+            System.out.println("==================================================");
+            System.out.println(
+                    "\nElige opción:"
+                    + "\n1.-Ver todos los Pagos"
+                    + "\n2.-Ver Pagos por tipo de Servicio\n"
+                    + "3.-Ver Pagos por código de caja\n"
+                    + "4.-Ver Dinero Comisionado por servicios\n"
+                    + "5.-Regresar Menú Principal\n");
+            System.out.println("==================================================");
+            opcion = scanner.nextInt();
+            switch (opcion) {
+                case 1:
+                    break;
 
-            try {
-                System.out.println("************************\nElige opción:"
-                        + "\n1.-Ver todos los Pagos"
-                        + "\n2.-Ver Pagos por tipo de Servicio\n"
-                        + "3.-Ver Pagos por código de caja\n"
-                        + "4.-Ver Dinero Comisionado por servicios\n"
-                        + "5.-Regresar Menú Principal\n");
-                select = Integer.parseInt(scanner.nextLine());
-                switch (select) {
-                    case 1:
-                        break;
+                case 2:
+                    break;
+                case 3:
 
-                    case 2:
-                        break;
-                    case 3:
+                case 4:
+                    break;
+                case 5:
+                    menu();
+                    break;
 
-                    case 4:
-                        break;
-                    case 5:
-                        menu();
-                        break;
-
-                }
-            } catch (Exception e) {
-                System.err.println("Opps! un error" + e);
             }
+        } while (opcion != 8);
 
-        }
     }
 
     public void InicializarVectores() {
@@ -124,6 +133,8 @@ public class AppProyecto1 {
         montoComision.clear();
         montoAPagar.clear();
         montoDeducido.clear();
+        montoPagaCon.clear();
+        montoVuelto.clear();
         conta = 0;
         System.out.println(" ***Vectores inicializados*** ");
     }
@@ -137,7 +148,7 @@ public class AppProyecto1 {
     }
 
     public void IngresarDatos() {
-        numeroDePago.add(conta);
+        numeroDePago.add(conta + 1);
 
         System.out.println("Ingrese la fecha: ");
         fecha.add(scanner.next());
@@ -163,16 +174,7 @@ public class AppProyecto1 {
         System.out.println("caja: " + numeroDeCaja.get(conta));
 
         //validar que la opción sea correcta solo se pueda ingresar 1,2,3
-        int servicioIngresado = 0;
-        do {
-            System.out.println("Ingrese el tipo de servicio: " + " \n [1-Electricidad 2-Telefono 3-Agua]");
-            servicioIngresado = Integer.parseInt(scanner.next());
-            if (servicioIngresado <= 3 && servicioIngresado > 0) {
-                tipoDeServicio.add(servicioIngresado);
-            } else {
-                System.err.println("Error vuelva a ingresar el valor!");
-            }
-        } while (servicioIngresado > 3 || servicioIngresado < 0);
+        ValidarServicioIngresado("INGRESAR", 0);
 
         System.out.println("Ingrese el número de factura: ");
         numeroDeFactura.add(scanner.next());
@@ -180,10 +182,49 @@ public class AppProyecto1 {
         System.out.println("Ingrese el monto a pagar: ");
         montoAPagar.add(Double.valueOf(scanner.next()));
 
-        CalcularComision();
+        //Validar que el monto con el que se paga sea mayor al monto a pagar en el servicio
+        ValidarMontoPagaCon(conta, "INGRESAR");
 
+        CalcularComision();
+        CalcularVuelto();
+        ImprimirDatos(conta);
         conta++; //variable contadora que sirve de Quía para la posición de los arreglos.
-        
+
+    }
+
+    public void ValidarServicioIngresado(String opcion, int indice) {
+        int servicioIngresado = 0;
+        do {
+            System.out.println("Ingrese el tipo de servicio: " + " \n [1-Electricidad 2-Telefono 3-Agua]");
+            servicioIngresado = Integer.parseInt(scanner.next());
+            if (servicioIngresado <= 3 && servicioIngresado > 0) {
+                if (opcion == "EDITAR") {
+                    tipoDeServicio.set(indice, servicioIngresado);
+                } else {
+                    tipoDeServicio.add(servicioIngresado);
+                }
+            } else {
+                System.err.println("Error vuelva a ingresar el valor!");
+            }
+        } while (servicioIngresado > 3 || servicioIngresado < 0);
+    }
+
+    public void ValidarMontoPagaCon(int indice, String opcion) {
+        double pagoCon = 0;
+        do {
+            System.out.println("Ingrese el monto con el que paga: ");
+            pagoCon = Double.valueOf(scanner.next());
+            if (pagoCon >= montoAPagar.get(indice)) {
+                if (opcion == "EDITAR") {
+                    montoPagaCon.set(indice, pagoCon);
+                } else {
+                    montoPagaCon.add(pagoCon);
+                }
+
+            } else {
+                System.err.println("Error, el monto con el que paga debe ser mayor al monto a pagar, vuelva a ingresar el valor!");
+            }
+        } while (pagoCon < montoAPagar.get(indice));
 
     }
 
@@ -203,27 +244,156 @@ public class AppProyecto1 {
                 throw new AssertionError();
         }
         montoComision.add(comision);
+        CalcularMontoDeducido();
     }
 
-    public void ConsultarPagos() {
-        System.out.println("**** Consulta de pagos ****");
+    public void CalcularMontoDeducido() {
+        montoDeducido.add(montoAPagar.get(conta) - montoComision.get(conta));
+        System.out.println("Monto deducido: " + montoDeducido.get(conta));
+    }
+
+    public void CalcularVuelto() {
+        LimpiarPantalla();
+        ImprimirDatos(conta);
+        montoVuelto.add(montoPagaCon.get(conta) - montoAPagar.get(conta));
+        System.out.println("Monto vuelto: " + montoVuelto.get(conta));
+    }
+
+    public void ConsultarPagos(String opcion) {
+        System.out.println("**** Consultar el pago ****");
         System.out.println("Ingrese el número de pago a consultar");
-        Integer numeroPagoAConsultar = Integer.valueOf(scanner.nextLine());
+
+        int numeroPagoAConsultar = scanner.nextInt();
 
         for (int i = 0; i < numeroDePago.size(); i++) {
             if (numeroPagoAConsultar == numeroDePago.get(i)) {
-                ImprimirDatos(i);
+
+                switch (opcion) {
+                    case "EDITAR":
+                        Editar(i);
+                        break;
+                    case "ELIMINAR":
+                        Eliminar(i);
+                        break;
+                    case "CONSULTAR":
+
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+
             } else {
-                System.err.println("Pago no encontrado!");
+                LimpiarPantalla();
+                System.err.println("Pago no se encuentra Registrado.");
 
             }
         }
+        if (numeroDePago.size() == 0) {
+            System.err.println("Pago no se encuentra Registrado.");
+        }
     }
 
-    public void ImprimirDatos( int i ) {
+    public void ImprimirDatos(int indice) {
+        System.out.println("==================================================");
+        System.out.println("                 FACTURA DE SERVICIO                ");
+        System.out.println("==================================================");
+        System.out.println("A-Fecha: " + fecha.get(indice));
+        System.out.println("B-Hora: " + hora.get(indice));
+        System.out.println("C-Cedula: " + cedula.get(indice));
+        System.out.println("D-Nombre: " + nombre.get(indice));
+        System.out.println("E-Apellido1: " + apellido1.get(indice) + " " + " F-Apellido2: " + apellido2.get(indice));
+        System.out.println("G-Tipo de servicio: " + tipoDeServicio.get(indice));
+        System.out.println("H-Numero de factura: " + numeroDeFactura.get(indice));
+        System.out.println("==================================================");
+
+    }
+
+    public static void LimpiarPantalla() {
+        for (int clear = 0; clear < 100; clear++) {
+            System.out.println("\b");
+        }
+    }
+
+    public void Editar(int indice) {
+        final ArrayList<String> opcionesEditar = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "F", "G", "H"));
+        String editarOtroDato = "N";
+        do {
+            ImprimirDatos(indice);
+            System.out.println("==================================================");
+            System.out.println("                   EDITAR DATOS                   ");
+            System.out.println("==================================================");
+
+            System.out.println("Seleccóne opcion a editar: ");
+            String opcionEditar = scanner.next();
+            String nuevoDato = "";
+            do {
+                if (opcionesEditar.contains(opcionEditar.toUpperCase())) {
+                    System.out.println("Ingrese el nuevo dato: ");
+                    nuevoDato = scanner.next();
+                } else {
+                    System.err.println("Error, ingrese un valor valido para editar!");
+                }
+            } while (!opcionesEditar.contains(opcionEditar.toUpperCase()));
+            switch (opcionEditar) {
+                case "A":
+                    fecha.set(indice, nuevoDato);
+                    break;
+                case "B":
+                    hora.set(indice, nuevoDato);
+                    break;
+                case "C":
+                    cedula.set(indice, nuevoDato);
+                    break;
+                case "D":
+                    nombre.set(indice, nuevoDato);
+                    break;
+                case "E":
+                    apellido1.set(indice, nuevoDato);
+                    break;
+                case "F":
+                    apellido2.set(indice, nuevoDato);
+                    break;
+                case "G":
+                    ValidarServicioIngresado("EDITAR", indice);
+                    System.out.println("Al ingresar un nuevo tipo de servicio debe ingresar los siguientes datos: ");
+                    System.out.println("Ingrese el nuevo número de factura: ");
+                    numeroDeFactura.set(indice, scanner.next());
+
+                    System.out.println("Ingrese el nuevo monto a pagar: ");
+                    montoAPagar.set(indice, Double.valueOf(scanner.next()));
+
+                    CalcularComision();
+                    CalcularVuelto();
+
+                    break;
+                case "H":
+                    System.out.println("Al ingresar un nuevo numero de factura debe ingresar los siguientes datos: ");
+
+                    System.out.println("Ingrese el nuevo monto a pagar: ");
+                    montoAPagar.set(indice, Double.valueOf(scanner.next()));
+                    numeroDeFactura.set(indice, nuevoDato);
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+
+            System.out.println("Desea editar otro dato? ");
+            System.out.println(" N = no // Y = si ");
+            editarOtroDato = scanner.next();
+
+        } while (editarOtroDato.toUpperCase() != "N");
+
+    }
+
+    public void Eliminar(int indice) {
         System.out.println("**** Impresión de datos ****");
-        System.out.println("-Numero de pago: " + numeroDePago.get(i) );
-        
-    }
+        System.out.println("-Numero de pago: " + numeroDePago.get(indice));
+        System.out.println("Esta factura fue emitida en: " + fecha.get(indice));
+        System.out.println("A las: " + hora.get(indice));
+        System.out.println("");
+        System.out.println("*** Informacion del cliente ***");
+        System.out.println("Nombre: " + nombre.get(indice));
+        System.out.println("Primer appellido");
 
+    }
 }
