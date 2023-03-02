@@ -458,6 +458,7 @@ public class AppProyecto1 {
     }
 
     public void ReportePorTipoDeServicio() {
+         ValidarServicioIngresado("VALIDAR", 0);
         System.out.println("=============================================================================");
         System.out.println("                         REPORTE TODOS LOS PAGOS                             ");
         System.out.println("=============================================================================");
@@ -466,7 +467,7 @@ public class AppProyecto1 {
         int totalRegistros = 0;
         double totalMontos = 0;
 
-        ValidarServicioIngresado("VALIDAR", 0);
+       
         for (int i = 0; i < numeroDeFactura.size(); i++) {
             if (tipoServicioReporte == tipoDeServicio.get(i)) {
                 System.out.println(" " + (i + 1) + "     " + fecha.get(i) + " " + hora.get(i) + "   " + cedula.get(i) + "   " + nombre.get(i) + "   " + apellido1.get(i) + "   " + apellido2.get(i) + "   " + montoAPagar.get(i));
