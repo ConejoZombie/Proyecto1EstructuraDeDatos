@@ -1,5 +1,6 @@
 package appproyecto1;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -113,9 +114,10 @@ public class AppProyecto1 {
                     ReportePorTipoDeServicio();
                     break;
                 case 3:
-                    
+                    ReportePorCodigoDeCaja();
                     break;
                 case 4:
+                    ReporteDineroComisionado();
                     break;
                 case 5:
                     LimpiarPantalla();
@@ -328,9 +330,16 @@ public class AppProyecto1 {
 
     }
 
+    /*
     public static void LimpiarPantalla() {
-        for (int clear = 0; clear < 100; clear++) {
+        for (int clear = 0; clear < 10; clear++) {
             System.out.println("\b");
+        }
+    } */
+    public static void LimpiarPantalla() {
+        // Imprime 50 líneas en blanco para simular la limpieza de la consola
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
         }
     }
 
@@ -458,16 +467,15 @@ public class AppProyecto1 {
     }
 
     public void ReportePorTipoDeServicio() {
-         ValidarServicioIngresado("VALIDAR", 0);
+        ValidarServicioIngresado("VALIDAR", 0);
         System.out.println("=============================================================================");
-        System.out.println("                         REPORTE TODOS LOS PAGOS                             ");
+        System.out.println("                      REPORTE POR TIPO DE SERVICIO                           ");
         System.out.println("=============================================================================");
         System.out.println("# pago Fecha/Hora  Pago Cedula   Nombre   Apellido1   Apellido2  Monto Recibo");
         System.out.println("==============================================================================");
         int totalRegistros = 0;
         double totalMontos = 0;
 
-       
         for (int i = 0; i < numeroDeFactura.size(); i++) {
             if (tipoServicioReporte == tipoDeServicio.get(i)) {
                 System.out.println(" " + (i + 1) + "     " + fecha.get(i) + " " + hora.get(i) + "   " + cedula.get(i) + "   " + nombre.get(i) + "   " + apellido1.get(i) + "   " + apellido2.get(i) + "   " + montoAPagar.get(i));
@@ -477,5 +485,87 @@ public class AppProyecto1 {
         }
         System.out.println("==============================================================================");
         System.out.println("Total de registros: " + totalRegistros + "                                     Monto total: " + totalMontos);
+    }
+
+    public void ReportePorCodigoDeCaja() {
+        int opcionEditar = 0;
+        do {
+            System.out.println("=============================================================================");
+            System.out.println("                       REPORTE POR CODIGO DE CAJA                            ");
+            System.out.println("=============================================================================");
+            System.out.println("                                                                             ");
+            System.out.println("Seleccione el codigo de cajero:               [1]Caja#1  [2]Caja#2  [3]Caja#3");
+            System.out.println("                                                                             ");
+            System.out.println("=============================================================================");
+            opcionEditar = scanner.nextInt();
+            if (opcionEditar <= 3 && opcionEditar > 0) {
+                break;
+            } else {
+                System.err.println("Error, ingrese un valor valido para editar!");
+            }
+        } while (opcionEditar > 3 || opcionEditar < 0);
+
+        System.out.println("# pago Fecha/Hora  Pago Cedula   Nombre   Apellido1   Apellido2  Monto Recibo");
+        System.out.println("==============================================================================");
+        int totalRegistros = 0;
+        double totalMontos = 0;
+
+        for (int i = 0; i < numeroDeFactura.size(); i++) {
+            if (opcionEditar == numeroDeCaja.get(i)) {
+                System.out.println(" " + (i + 1) + "     " + fecha.get(i) + " " + hora.get(i) + "   " + cedula.get(i) + "   " + nombre.get(i) + "   " + apellido1.get(i) + "   " + apellido2.get(i) + "   " + montoAPagar.get(i));
+                totalMontos += montoAPagar.get(i);
+                totalRegistros++;
+            }
+        }
+        System.out.println("==============================================================================");
+        System.out.println("Total de registros: " + totalRegistros + "                                     Monto total: " + totalMontos);
+    }
+
+    public void ReporteDineroComisionado() {
+        System.out.println("=============================================================================");
+        System.out.println("        REPORTE DINERO COMISONADO-DESGLOCE POR TIPO DE SERVICIO              ");
+        System.out.println("=============================================================================");
+        System.out.println("ITEM                 Cant.Transacciones                 Total Comisonado");
+        System.out.println("==============================================================================");
+        int totalRegistrosElectricidad = 0;
+        int totalRegistrosTelefono = 0;
+        int totalRegistrosAgua = 0;
+        int totalRegistros = 0;
+        double totalMontosElectricidad = 0;
+        double totalMontosTelefono = 0;
+        double totalMontosAgua = 0;
+        double totalMontos = 0;
+        for (int i = 0; i < numeroDeFactura.size(); i++) {
+            if (tipoDeServicio.get(i) == 1) {
+                totalMontosElectricidad += montoAPagar.get(i);
+                totalRegistrosElectricidad++;
+            }
+            if (tipoDeServicio.get(i) == 2) {
+                totalMontosTelefono += montoAPagar.get(i);
+                totalRegistrosTelefono++;
+            }
+            if (tipoDeServicio.get(i) == 3) {
+                totalMontosAgua += montoAPagar.get(i);
+                totalRegistrosAgua++;
+            }
+
+            totalMontos = totalMontosElectricidad + totalMontosAgua + totalMontosTelefono;
+            totalRegistros++;
+        }
+        System.out.println("1-Electricidad" + "                " + totalRegistrosElectricidad + "                            " + totalMontosElectricidad);
+        System.out.println("2-Telefono    " + "                " + totalMontosTelefono + "                            " + totalMontosTelefono);
+        System.out.println("3-Agua        " + "                " + totalRegistrosAgua + "                            " + totalMontosAgua);
+
+        System.out.println("==============================================================================");
+        System.out.println("Total                         " + totalRegistros + "                            " + totalMontos);
+
+        totalRegistrosElectricidad = 0;
+        totalRegistrosTelefono = 0;
+        totalRegistrosAgua = 0;
+        totalRegistros = 0;
+        totalMontosElectricidad = 0;
+        totalMontosTelefono = 0;
+        totalMontosAgua = 0;
+        totalMontos = 0;
     }
 }
